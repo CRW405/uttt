@@ -15,12 +15,21 @@
 // let w(l=n) "recursive wins"    = [arr of length n with [arr of length 9 with (-1, 0, 1)]]
 //
 // shapes {
-//    3 across: +1
-//    3 down  : +3
-//    / angle : +2
-//    \ angle : +4
+//    3 across: +1    // 0,1,2 3,4,5 6,7,8
+//    3 down  : +3    // 0,3,6 1,4,7 2,5,8
+//    / angle : +2    // 2,4,6
+//    \ angle : +4    // 0,4,8
 // }
 //
-// func determine_winner(board, pos) {
+// from 0: 3
+// from 1: 1
+// from 2: 2
+// from 3: 1
+// from 4,5: 0
+// from 6: 1
+// from 7,8: 0
+//
+// func determine_winner(board) {
+//       let shapes = [1,2,3,4]
 //
 // }
