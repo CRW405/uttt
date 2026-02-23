@@ -1,0 +1,33 @@
+* {
+  box-sizing: border-box;
+  /* border: 1px solid red; */
+}
+
+html,
+main,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#visual-board {
+  min-height: 500px;
+  min-width: 500px;
+  display: grid;
+  grid-template: auto auto auto / auto auto auto;
+}
+
+.super_cell {
+  display: grid;
+  grid-template: auto auto auto / auto auto auto;
+  background-color: blue;
+  margin: 2px;
+}
+
+.sub_cell {
+  background-color: green;
+  margin: 1px;
+  padding: 5px;
+}
