@@ -35,6 +35,30 @@
 //
 // use determine_winner() to recursively determine wins that can determine placements on the super board
 
-let n = 1;
+function create_board(l) {
+  // console.log("Running for l = " + l);
 
-let simpleBoard = new Array(9).fill(0);
+  if (l >= 1) {
+    return new Array(9).fill(null).map(() => create_board(l - 1));
+  } else {
+    return new Array(9).fill(0);
+  }
+}
+
+function log_board(board, depth = 0) {
+  // console.log("---");
+  if (Array.isArray(board[0])) {
+    const indent = "  ".repeat(depth);
+
+    console.log(`${indent}Board (depth ${depth}):`);
+
+    depth++;
+    board.forEach((sub_board) => log_board(sub_board, depth));
+  } else {
+    // board.forEach((place) => console.log(place));
+  }
+  // console.log("---");
+}
+
+let game = create_board(5);
+log_board(game);
