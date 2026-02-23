@@ -55,10 +55,46 @@ function log_board(board, depth = 0) {
     depth++;
     board.forEach((sub_board) => log_board(sub_board, depth));
   } else {
-    // board.forEach((place) => console.log(place));
+    board.forEach((place) => console.log(place));
   }
-  // console.log("---");
+  console.log("---");
 }
 
-let game = create_board(5);
-log_board(game);
+let winning_shapes = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
+
+function determine_winner(board) {
+  let winner = 0;
+
+  winning_shapes.forEach((shape) => {
+    if (
+      board[shape[0]] !== 0 &&
+      board[shape[0]] === board[shape[1]] &&
+      board[shape[1]] === board[shape[2]]
+    ) {
+      winner = board[shape[0]];
+      return;
+    }
+  });
+
+  return winner;
+}
+
+// let n = 5;
+// let game = create_board(n);
+// let place = new Array(n);
+// let wins = create_board(n - 1);
+// log_board(game);
+// log_board(wins);
+// let example_simple_board = [1, -1, 1, 0, -1, 0, 0, -1, 0];
+// console.log(determine_winner(example_simple_board));
+
+export { create_board, log_board, winning_shapes, determine_winner };
