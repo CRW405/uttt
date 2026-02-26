@@ -3,15 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title></title>
+    <title>Recursive TicTacToe</title>
     <link href="./index.css" rel="stylesheet" />
   </head>
   <body>
     <main>
+      <div class="ui-div">
+        <h1>Recursive TicTacToe</h1>
+      </div>
+
+      <div class="ui-div" id="ui-controls">
+        <h2>Controls</h2>
+        <ul>
+          <li>Click and drag to move camera</li>
+          <li>Scroll to zoom</li>
+        </ul>
+      </div>
+
       <div id="visual-board"></div>
     </main>
 
     <script type="module" src="./logic.js"></script>
     <script type="module" src="./renderer.js"></script>
+    <script src="./controller.js"></script>
   </body>
 </html>

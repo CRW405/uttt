@@ -1,6 +1,6 @@
 * {
   box-sizing: border-box;
-  /* border: 1px solid red; */
+  border: 1px solid red;
 }
 
 html,
@@ -12,22 +12,49 @@ body {
   padding: 0;
 }
 
+.ui-div {
+  background-color: white;
+  z-index: 10;
+  position: absolute;
+  width: 100%;
+  opacity: 0.9;
+  margin: 0;
+  padding: 0;
+}
+
+#ui-controls {
+  bottom: 0;
+}
+
 #visual-board {
-  min-height: 500px;
-  min-width: 500px;
+  aspect-ratio: 1 / 1;
+  min-width: 100%;
+  z-index: -10;
+  display: block;
+}
+
+.super_cell,
+.sub_cell {
+  aspect-ratio: 1 / 1;
   display: grid;
   grid-template: auto auto auto / auto auto auto;
+  border: 0.2rem solid black;
 }
 
 .super_cell {
-  display: grid;
-  grid-template: auto auto auto / auto auto auto;
-  background-color: blue;
-  margin: 2px;
+  /* padding: 0.1rem; */
+  /* margin: 0.1rem; */
+}
+
+.super_cell:hover {
+  border-color: red;
 }
 
 .sub_cell {
-  background-color: green;
-  margin: 1px;
-  padding: 5px;
+  /* margin: 0.1rem; */
+  min-width: 15px;
+}
+
+.sub_cell:hover {
+  border-color: blue;
 }

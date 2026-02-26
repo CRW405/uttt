@@ -15,7 +15,7 @@ function create_visual_board(container, board) {
   }
 }
 
-let n = 2;
+let n = 4;
 let game = create_board(n);
 const visual_board = document.querySelector("#visual-board");
 create_visual_board(visual_board, game);
