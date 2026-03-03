@@ -1,6 +1,6 @@
 // Controller for visual board pan and zoom interactions
 // Handles mouse events for panning, zooming, and click suppression after drag
-//
+
 const visualBoard = document.getElementById("visual-board"); // Board element to manipulate
 
 let zoom = 1; // Current zoom level

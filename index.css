@@ -1,6 +1,6 @@
 * {
   box-sizing: border-box;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 
 html,
@@ -39,6 +39,8 @@ body {
   display: grid;
   grid-template: auto auto auto / auto auto auto;
   border: 0.2rem solid black;
+  /* border-width: 0.2rem; */
+  /* border-style: solid; */
 }
 
 .super_cell {
