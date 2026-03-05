@@ -1,5 +1,30 @@
 import { create_board } from "./logic.js";
 
+let player = 1;
+
+function mark_cell(board, path) {
+  let cursor = board;
+  let val = 0;
+  for (let i = 0; i < path.length; i++) {
+    if (Array.isArray(cursor[path[i]])) {
+      cursor = cursor[path[i]];
+    } else {
+      val = cursor[path[i]];
+    }
+  }
+
+  console.log(cursor[val]);
+
+  if (cursor[val] === 0) {
+    cursor[val] = player;
+    console.log(player + " placed mark at " + path.join("-"));
+  } else {
+    console.log("Cell Occupied");
+  }
+
+  player = -player;
+}
+
 function create_visual_board(container, board, level, path = [0]) {
   if (Array.isArray(board[0])) {
     let super_cell = document.createElement("div");
@@ -19,6 +44,10 @@ function create_visual_board(container, board, level, path = [0]) {
     sub_cell.dataset.level = 0;
 
     sub_cell.dataset.path = path.join("-");
+
+    sub_cell.addEventListener("click", (e) => {
+      mark_cell(board, path);
+    });
 
     container.appendChild(sub_cell);
   }
