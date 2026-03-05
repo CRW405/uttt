@@ -1,6 +1,9 @@
 import { create_board } from "./logic.js";
 
 let player = 1;
+let n = 3;
+let game = create_board(n);
+const visual_board = document.querySelector("#visual-board");
 
 function mark_cell(board, path) {
   let cursor = board;
@@ -23,6 +26,7 @@ function mark_cell(board, path) {
   }
 
   player = -player;
+  create_visual_board(visual_board, board, n);
 }
 
 function create_visual_board(container, board, level, path = [0]) {
@@ -45,15 +49,29 @@ function create_visual_board(container, board, level, path = [0]) {
 
     sub_cell.dataset.path = path.join("-");
 
-    sub_cell.addEventListener("click", (e) => {
-      mark_cell(board, path);
-    });
+    switch (board[path[path.length - 1]]) {
+      case 0:
+        sub_cell.addEventListener("click", (e) => {
+          mark_cell(board, path);
+        });
+        break;
+      case 1:
+        sub_cell.innerText = "X";
+        sub_cell.classList.add("x-mark");
+        break;
+
+      case -1:
+        sub_cell.innerText = "O";
+        sub_cell.classList.add("o-mark");
+        break;
+
+      default:
+        console.log("Unkown mark in sub board: " + board);
+        break;
+    }
 
     container.appendChild(sub_cell);
   }
 }
 
-let n = 3;
-let game = create_board(n);
-const visual_board = document.querySelector("#visual-board");
 create_visual_board(visual_board, game, n);
