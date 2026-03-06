@@ -55,8 +55,18 @@ body {
 .sub_cell {
   /* margin: 0.1rem; */
   min-width: 15px;
+  overflow: hidden;
 }
 
 .sub_cell:hover {
   border-color: blue;
+}
+
+.x-mark {
+  background-color: red;
+  color: white;
+}
+.o-mark {
+  background-color: blue;
+  color: white;
 }

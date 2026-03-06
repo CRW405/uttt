@@ -5,7 +5,10 @@ let n = 3;
 let game = create_board(n);
 const visual_board = document.querySelector("#visual-board");
 
+function render_mark(board, path) {}
+
 function mark_cell(board, path) {
+  console.log(path);
   let cursor = board;
   let val = 0;
   for (let i = 0; i < path.length; i++) {
@@ -16,20 +19,29 @@ function mark_cell(board, path) {
     }
   }
 
-  console.log(cursor[val]);
+  // console.log(cursor[val]);
 
   if (cursor[val] === 0) {
     cursor[val] = player;
-    console.log(player + " placed mark at " + path.join("-"));
+    let player_mark = player === 1 ? "X" : "O";
+    console.log(
+      "[renderer][mark_cell()] " +
+        player_mark +
+        " placed mark at " +
+        path.join("-"),
+    );
   } else {
     console.log("Cell Occupied");
+    player = -player;
   }
 
   player = -player;
-  create_visual_board(visual_board, board, n);
+  visual_board.innerHTML = "";
+  create_visual_board(visual_board, game, n);
 }
 
 function create_visual_board(container, board, level, path = [0]) {
+  // console.log("[renderer][create_visual_board()]");
   if (Array.isArray(board[0])) {
     let super_cell = document.createElement("div");
     super_cell.classList.add("super_cell");
@@ -49,27 +61,11 @@ function create_visual_board(container, board, level, path = [0]) {
 
     sub_cell.dataset.path = path.join("-");
 
-    switch (board[path[path.length - 1]]) {
-      case 0:
-        sub_cell.addEventListener("click", (e) => {
-          mark_cell(board, path);
-        });
-        break;
-      case 1:
-        sub_cell.innerText = "X";
-        sub_cell.classList.add("x-mark");
-        break;
+    sub_cell.addEventListener("click", (e) => {
+      mark_cell(board, path);
+    });
 
-      case -1:
-        sub_cell.innerText = "O";
-        sub_cell.classList.add("o-mark");
-        break;
-
-      default:
-        console.log("Unkown mark in sub board: " + board);
-        break;
-    }
-
+    // sub_cell.innerText = board[path[path.length - 1]];
     container.appendChild(sub_cell);
   }
 }
