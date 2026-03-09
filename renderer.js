@@ -5,10 +5,22 @@ let n = 3;
 let game = create_board(n);
 const visual_board = document.querySelector("#visual-board");
 
-function render_mark(board, path) {}
+function render_mark(board, path, mark) {
+  let cell = document.querySelector(`[data-path='${path.join("-")}']`);
+  let className = mark === 1 ? "x-mark" : "o-mark";
+  cell.classList.add(className);
+}
 
 function mark_cell(board, path) {
   console.log(path);
+
+  let cell = document.querySelector(`[data-path='${path.join("-")}']`);
+
+  if (cell.dataset.mark !== "0") {
+    console.log("Attempted to mark already marked cell, ignored");
+    return;
+  }
+
   let cursor = board;
   let val = 0;
   for (let i = 0; i < path.length; i++) {
@@ -30,14 +42,14 @@ function mark_cell(board, path) {
         " placed mark at " +
         path.join("-"),
     );
+    cell.dataset.mark = player;
+    render_mark(board, path, player);
   } else {
     console.log("Cell Occupied");
     player = -player;
   }
 
   player = -player;
-  visual_board.innerHTML = "";
-  create_visual_board(visual_board, game, n);
 }
 
 function create_visual_board(container, board, level, path = [0]) {
@@ -66,6 +78,7 @@ function create_visual_board(container, board, level, path = [0]) {
     });
 
     // sub_cell.innerText = board[path[path.length - 1]];
+    sub_cell.dataset.mark = "0";
     container.appendChild(sub_cell);
   }
 }
