@@ -8,6 +8,8 @@ const visual_board = document.querySelector("#visual-board");
 function render_mark(board, path, mark) {
   let cell = document.querySelector(`[data-path='${path.join("-")}']`);
   let className = mark === 1 ? "x-mark" : "o-mark";
+  let mark_symbol = mark === 1 ? "X" : "O";
+  cell.innerText = mark_symbol;
   cell.classList.add(className);
 }
 
