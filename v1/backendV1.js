@@ -59,73 +59,95 @@
 // 6. The first player to get three super cells of level 1 in a straight or diagonal wins the whole game
 
 function create_board(l) {
-    if (l >= 1) {
-        return new Array(9).fill(null).map(() => create_board(l - 1));
-    } else {
-        return new Array(9).fill(0);
-    }
+	if (l >= 1) {
+		return new Array(9).fill(null).map(() => create_board(l - 1));
+	} else {
+		return new Array(9).fill(0);
+	}
 }
 
 function log_board(board, depth = 0) {
-    if (Array.isArray(board[0])) {
-        const indent = "  ".repeat(depth);
-        depth++;
-        board.forEach((sub_board) => log_board(sub_board, depth));
-    } else {
-        board.forEach((place) => console.log(place));
-    }
+	if (Array.isArray(board[0])) {
+		const indent = "  ".repeat(depth);
+		depth++;
+		board.forEach((sub_board) => log_board(sub_board, depth));
+	} else {
+		board.forEach((place) => console.log(place));
+	}
 }
 
 let winning_shapes = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
+	[0, 1, 2],
+	[3, 4, 5],
+	[6, 7, 8],
+	[0, 3, 6],
+	[1, 4, 7],
+	[2, 5, 8],
+	[0, 4, 8],
+	[2, 4, 6],
 ];
 
 function mark(board, path, player) {
-    // console.log("[Backend][mark()] Player is " + player);
-    let cur = board;
-    let marked = false;
+	let cur = board;
+	let marked = false;
 
-    for (let i = 0; i < path.length - 1; i++) {
-        cur = cur[path[i]];
-    }
+	for (let i = 0; i < path.length - 1; i++) {
+		cur = cur[path[i]];
+	}
 
-    let finalIndex = path[path.length - 1];
-    let val = cur[finalIndex];
-    // console.log("[Backend][mark()] Current value of " + path + " is " + val);
+	let finalIndex = path[path.length - 1];
+	let val = cur[finalIndex];
 
-    if (val === 0) {
-        cur[finalIndex] = player;
-        marked = true;
-        // console.log("[Backend][mark()] Cell Marked " + player + " at " + path);
-    } else {
-        // console.log("[Backend][mark()] Cell Occupied");
-    }
+	if (val === 0) {
+		cur[finalIndex] = player;
+		marked = true;
+	} else {
+		// pass
+	}
+	determine_winner(cur);
 
-    return marked;
+	return marked;
 }
 
 function determine_winner(board) {
-    let winner = 0;
+	console.log("[Backend][determine_winner()] Checking " + board);
+	let winner = 0;
 
-    winning_shapes.forEach((shape) => {
-        if (
-            board[shape[0]] !== 0 &&
-            board[shape[0]] === board[shape[1]] &&
-            board[shape[1]] === board[shape[2]]
-        ) {
-            winner = board[shape[0]];
-            return;
-        }
-    });
+	winning_shapes.forEach((shape) => {
+		if (
+			board[shape[0]] !== 0 &&
+			board[shape[0]] === board[shape[1]] &&
+			board[shape[1]] === board[shape[2]]
+		) {
+			winner = board[shape[0]];
+			return;
+		}
+	});
 
-    return winner;
+	console.log("[Backend][determine_winner()] Winner: " + winner);
+
+	return winner;
 }
 
-export { create_board, log_board, winning_shapes, determine_winner, mark };
+function createWinsArray(l) {
+	let arr = new Array(l);
+	arr.map(() => new Array(9).fill(0));
+}
+
+// determine_super_winners(board, path_to_last_capture)
+// when a board is captured, we check the containing super board
+// we treat each sub board as a cell and determine the winner
+// this recurses upwards until no more wins or the game is won
+
+// determine_valid_moves(board, path_of_last_mark)
+// performs valid move calculation and handles cases such as a mark that leads to a captured board
+// returns an array of valid paths
+
+export {
+	create_board,
+	log_board,
+	winning_shapes,
+	determine_winner,
+	mark,
+	createWinsArray,
+};
