@@ -1,0 +1,13 @@
+.ui-div {
+	background-color: white;
+	z-index: 10;
+	position: absolute;
+	width: 100%;
+	opacity: 0.9;
+	margin: 0;
+	padding: 0;
+}
+
+#ui-controls {
+	bottom: 0;
+}

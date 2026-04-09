@@ -1,29 +1,32 @@
 class Cell {
 	constructor() {
 		this.mark = 0;
+		this.path = [];
 	}
 }
 
 class Board extends Cell {
 	constructor() {
 		super();
-		this.board = new Array(9);
+		this.board = [];
 	}
 }
 
-function create_board(n) {
+function create_board(n, path = [0]) {
 	let board = new Board();
+	board.path = path;
 	if (n === 1) {
-		board.board = board.board.map(() => new Cell());
+		board.board = Array.from({ length: 9 }, () => new Cell());
 	} else {
-		board.board = board.board.map(() => create_board(n - 1));
-		board.board.forEach((sub_board) => create_board(n - 1));
+		board.board = Array.from({ length: 9 }, (_, index) =>
+			create_board(n - 1, [...path, index]),
+		);
 	}
 	return board;
 }
 
 function mark(board, path, player) {
-	let target = traverse(board, path);
+	let target = find(board, path);
 
 	if (target.mark === 0) {
 		target.mark = player;
@@ -33,7 +36,7 @@ function mark(board, path, player) {
 	}
 }
 
-function traverse(board, path) {
+function find(board, path) {
 	let target = board;
 
 	for (let index of path) {
@@ -67,4 +70,4 @@ function determine_winner(board) {
 	return 0;
 }
 
-export { create_board, mark, determine_winner };
+export { Cell, Board, create_board, mark, find, determine_winner };
