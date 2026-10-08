@@ -4,14 +4,13 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>Recursive TicTacToe</title>
-		<!-- <link href="./v1/styleV1.css" rel="stylesheet" /> -->
-		<link href="./v2/game.css" rel="stylesheet" />
-		<link href="./v2/ui.css" rel="stylesheet" />
+		<link href="./style.css" rel="stylesheet" />
 	</head>
 	<body>
 		<main>
-			<div class="ui-div">
+			<div class="ui-div game-header">
 				<h1>Recursive TicTacToe</h1>
+				<p id="game-status" aria-live="polite"></p>
 			</div>
 
 			<div class="ui-div" id="ui-controls">
@@ -23,13 +22,49 @@
 			</div>
 
 			<div id="visual-board"></div>
+
+			<section
+				id="game-setup"
+				class="game-screen"
+				aria-labelledby="setup-title"
+			>
+				<form id="game-setup-form">
+					<h2 id="setup-title">New Game</h2>
+					<label for="game-depth">Game depth</label>
+					<input
+						id="game-depth"
+						name="depth"
+						type="number"
+						min="1"
+						step="1"
+						value="3"
+						required
+					/>
+					<p id="game-depth-warning" role="status" hidden>
+						Levels 4 and above can have performance and visual issues. I'm
+						working on optimizations.
+						<button type="submit">Start game</button>
+					</p>
+				</form>
+			</section>
+
+			<section
+				id="game-over-screen"
+				class="game-screen"
+				aria-labelledby="game-over-title"
+				hidden
+			>
+				<div>
+					<h2 id="game-over-title">Game over</h2>
+					<p id="game-over-message" aria-live="assertive"></p>
+					<button id="play-again" type="button">Play again</button>
+					<button id="new-game" type="button">New game</button>
+				</div>
+			</section>
 		</main>
 
-		<!-- <script type="module" src="./v1/backendV1.js"></script> -->
-		<!-- <script type="module" src="./v1/frontendV1.js"></script> -->
-
-		<script type="module" src="./v2/backendV2.js"></script>
-		<script type="module" src="./v2/frontendV2.js"></script>
+		<script type="module" src="./backend.js"></script>
+		<script type="module" src="./frontend.js"></script>
 
 		<script src="./controller.js"></script>
 	</body>

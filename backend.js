@@ -1,8 +1,3 @@
-// TODO:
-// - draw over captured boards
-// - make winning sub board move player to the corresponding cell in the super board (if applicable)
-// - add winning whole game when top level board is won
-
 class Cell {
 	constructor() {
 		this.mark = 0;
@@ -43,13 +38,14 @@ function mark(board, path, player) {
 	let super_board = find(board, path.slice(0, -1));
 
 	if (
+		target instanceof Cell &&
 		target.mark === 0 &&
 		super_board.mark === 0 &&
 		(free_move || is_valid_move(path))
 	) {
 		target.mark = player;
 		free_move = false;
-		determine_winner(super_board, board);
+		update_winners(board, super_board);
 		get_valid_moves(board, path);
 		return true;
 	} else {
@@ -58,12 +54,33 @@ function mark(board, path, player) {
 			reason = "Cell is already marked.";
 		} else if (super_board.mark !== 0) {
 			reason = "Corresponding board is already won.";
-		} else if (!free_move && !is_valid_move(move_path)) {
+		} else if (!free_move && !is_valid_move(path)) {
 			reason = "Move is not valid based on the last move.";
-			console.log(move_path + " not in valid moves: ", valid_moves);
+			console.log(path + " not in valid moves: ", valid_moves);
 		}
 		console.log("Invalid move: ", reason);
 		return false;
+	}
+}
+
+function update_winners(board, current_board) {
+	while (current_board) {
+		const previous_mark = current_board.mark;
+		determine_winner(current_board);
+
+		if (current_board.mark === previous_mark || current_board.mark === 0) {
+			break;
+		}
+
+		if (current_board === board) {
+			break;
+		}
+
+		const parent_path = current_board.path.slice(0, -1);
+		if (parent_path.length < board.path.length) {
+			break;
+		}
+		current_board = find(board, parent_path);
 	}
 }
 
@@ -106,51 +123,78 @@ const winning_shapes = [
 ];
 
 function determine_winner(board) {
+	if (!board || !Array.isArray(board.board) || board.mark !== 0) {
+		return board?.mark ?? 0;
+	}
+
 	winning_shapes.forEach((shape) => {
 		if (
 			board.board[shape[0]].mark !== 0 &&
 			board.board[shape[0]].mark === board.board[shape[1]].mark &&
 			board.board[shape[1]].mark === board.board[shape[2]].mark
 		) {
-			let winner = board.board[shape[0]].mark;
-			board.mark = winner;
-		} else if (board.board.every((cell) => cell.mark !== 0)) {
-			board.mark = "draw";
+			board.mark = board.board[shape[0]].mark;
 		}
 	});
+
+	if (board.mark === 0 && board.board.every((cell) => cell.mark !== 0)) {
+		board.mark = "draw";
+	}
+
+	return board.mark;
 }
 
 let free_move = true;
 let valid_moves = [];
 
+function reset_game_state() {
+	free_move = true;
+	valid_moves = [];
+}
+
 function get_valid_moves(board, last_mark_path) {
 	valid_moves = [];
 
-	let corresponding_board_path = last_mark_path
-		.slice(0, -2)
-		.concat(last_mark_path[last_mark_path.length - 1]);
+	let marked_board_path = last_mark_path.slice(0, -1);
+	let marked_board = find(board, marked_board_path);
+	let corresponding_board_path;
+
+	if (marked_board.mark !== 0) {
+		let parent_path = marked_board_path.slice(0, -1);
+		if (parent_path.length <= board.path.length) {
+			free_move = true;
+			valid_moves = get_cells(board).map((cell) => cell.path);
+			return valid_moves;
+		}
+
+		corresponding_board_path = parent_path
+			.slice(0, -1)
+			.concat(marked_board_path[marked_board_path.length - 1]);
+	} else {
+		corresponding_board_path = last_mark_path
+			.slice(0, -2)
+			.concat(last_mark_path[last_mark_path.length - 1]);
+	}
+
 	let corresponding_board = find(board, corresponding_board_path);
 	if (corresponding_board.mark !== 0) {
 		free_move = true;
-		return;
+		valid_moves = get_cells(board).map((cell) => cell.path);
+		return valid_moves;
 	}
 
 	if (corresponding_board.mark === 0) {
+		free_move = false;
 		valid_moves = get_cells(corresponding_board).map((cell) => cell.path);
-		// console.log("Valid moves: ", valid_moves);
-		return valid_moves;
-	} else {
-		// console.log("Valid moves: ", valid_moves);
-		valid_moves = get_cells(board).map((cell) => cell.path);
 		return valid_moves;
 	}
 }
 
 function get_cells(board, cells = []) {
-	if (board.board[0] instanceof Cell) {
-		cells.push(...board.board);
-	} else {
+	if (board.board[0] instanceof Board) {
 		board.board.forEach((sub_board) => get_cells(sub_board, cells));
+	} else {
+		cells.push(...board.board);
 	}
 
 	return cells;
@@ -164,4 +208,5 @@ export {
 	find,
 	determine_winner,
 	get_valid_moves,
+	reset_game_state,
 };

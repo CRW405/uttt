@@ -1,0 +1,138 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html,
+main,
+body {
+	width: 100%;
+	height: 100%;
+	background-color: lightgray;
+}
+
+#visual-board {
+	aspect-ratio: 1 / 1;
+	width: 100%;
+	min-width: 100%;
+	height: auto;
+	display: block;
+	background-color: white;
+}
+
+.board,
+.cell {
+	aspect-ratio: 1 / 1;
+	width: 100%;
+	height: 100%;
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	grid-template-rows: repeat(3, minmax(0, 1fr));
+}
+
+.board {
+	position: relative;
+	min-width: 0;
+	min-height: 0;
+	padding: 1px;
+	gap: 1px;
+	background: black;
+	isolation: isolate;
+	container-type: inline-size;
+}
+
+.board-result {
+	position: absolute;
+	inset: 1px;
+	z-index: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: clamp(0.5rem, 30cqi, 8rem);
+	font-weight: bold;
+	color: white;
+	background-color: rgba(0, 0, 0, 0.72);
+	pointer-events: all;
+	overflow: hidden;
+}
+
+.board-result.draw {
+	font-size: clamp(0.4rem, 16cqi, 4rem);
+	background-color: rgba(96, 96, 96, 0.78);
+}
+
+.cell {
+	min-width: 0;
+	min-height: 0;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+	box-shadow: inset 0 0 0 max(0.5px, 0.08cqi) black;
+}
+
+.cell:hover {
+	box-shadow: inset 0 0 0 max(1px, 0.2cqi) aliceblue;
+}
+
+.x,
+.o {
+	color: white;
+}
+
+.x {
+	background-color: red;
+}
+
+.o {
+	background-color: blue;
+}
+
+.corresponding-highlight {
+	box-shadow:
+		inset 0 0 0 max(1px, 0.2cqi) deeppink,
+		inset 0 0 0 max(0.5px, 0.08cqi) black;
+}
+
+.valid-move {
+	background-color: #99ee99;
+}
+
+.ui-div {
+	background-color: white;
+	z-index: 10;
+	position: absolute;
+	width: 100%;
+	opacity: 0.9;
+	margin: 0;
+	padding: 0;
+}
+
+.game-header {
+	top: 0;
+}
+
+#ui-controls {
+	bottom: 0;
+}
+
+.game-screen {
+	position: fixed;
+	inset: 0;
+	z-index: 20;
+	display: grid;
+	place-items: center;
+}
+
+.game-screen[hidden] {
+	display: none;
+}
+
+.game-screen > form,
+.game-screen > div {
+	display: grid;
+	gap: 1rem;
+}
